@@ -30,7 +30,8 @@ public class Checkout {
         return this.cart.add(goods);
     }
 
-
+    //    Ако клиентите имат достатъчно пари, за да си купят стоките,
+    //    касиерите им ги продават и издават касови бележки.
     public Receipt sellGoods(BigDecimal customerMoney) {
         String serialNumber = UUID.randomUUID().toString();
         Date issueDate = new Date();

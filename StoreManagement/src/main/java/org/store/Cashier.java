@@ -1,12 +1,30 @@
 package org.store;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class Cashier {
     private String id;
     private String name;
     private BigDecimal monthlySalary;
 
-//    Ако клиентите имат достатъчно пари, за да си купят стоките,
-//    касиерите им ги продават и издават касови бележки.
+    public Cashier(String name, BigDecimal monthlySalary) {
+        String id = UUID.randomUUID().toString();
+
+        this.id = id;
+        this.name = name;
+        this.monthlySalary = monthlySalary;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public BigDecimal getMonthlySalary() {
+        return monthlySalary;
+    }
 }

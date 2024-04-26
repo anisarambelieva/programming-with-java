@@ -1,6 +1,7 @@
 package org.store;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class Store {
@@ -13,6 +14,17 @@ public class Store {
 // да се изчисли колко са разходите за: заплати на касиери и за доставка на стоки и колко са
 // приходите от продадени стоки. Освен това, трябва да се изчислява колко е печалбата на
 // магазина.
+
+    public Store() {
+        this.cashiers = new ArrayList<Cashier>();
+        this.deliveredGoods = new ArrayList<Goods>();
+        this.soldGoods = new ArrayList<Goods>();
+        this.issuedReceipts = new ArrayList<Receipt>();
+    }
+
+    public Collection<Goods> getDeliveredGoods() {
+        return this.deliveredGoods;
+    }
 
     public BigDecimal calculateCashierSalaryExpenses() {
         return BigDecimal.ZERO;

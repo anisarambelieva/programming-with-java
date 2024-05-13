@@ -23,6 +23,6 @@ public class Customer {
 
     public void addToCart(Goods goods, double quantity) {
         double currentQuantity = this.cart.getOrDefault(goods, 0.0);
-        this.cart.put(goods, currentQuantity+1);
+        this.cart.put(goods, currentQuantity+quantity);
     }
 }

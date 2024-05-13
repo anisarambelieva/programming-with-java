@@ -99,26 +99,15 @@ public class CashDeskService {
 
             if (!file.exists()) {
                 file.createNewFile();
-                System.out.println("File created: " + file.getAbsolutePath());
             }
 
-            // Open the file in append mode using FileWriter
             FileWriter fileWriter = new FileWriter(file, true);
-
-            // Or use BufferedWriter for efficient writing
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-            // Append the content to the file
             bufferedWriter.write(content);
 
-            // Close the resources
             bufferedWriter.close();
             fileWriter.close();
-
-            System.out.println("Content appended to " + file.getAbsolutePath());
-
         } catch (IOException e) {
-            System.out.println("An error occurred.");
             e.printStackTrace();
         }
     }

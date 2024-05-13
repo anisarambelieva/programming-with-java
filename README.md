@@ -1,2 +1,1 @@
-# programming-with-java
-Homework assignments, notes and project for the Programming with Java course at NBU
+This repository contains the final project for the [Programming with Java course](https://ecatalog.nbu.bg/default.asp?V_Year=2023&YSem=4&Spec_ID=&Mod_ID=&PageShow=coursepresent&P_Menu=courses_part1&Fac_ID=3&M_PHD=0&P_ID=2206&TabIndex=3&K_ID=48852&K_TypeID=10&l=0) at NBU.

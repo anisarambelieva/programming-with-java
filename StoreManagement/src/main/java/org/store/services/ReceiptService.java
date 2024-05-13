@@ -39,9 +39,7 @@ public class ReceiptService {
 
             if (files.length > 0) {
                 for (File file : files) {
-                    if (file.isFile()) {
-                        fileCount++;
-                    }
+                    if (file.isFile()) fileCount++;
                 }
             }
         }

@@ -140,6 +140,7 @@ public class CashDeskService {
 
         System.out.println(receipt);
         saveReceiptToFile(receipt);
+
         return receipt;
     }
 }

@@ -27,4 +27,13 @@ public class Cashier {
     public BigDecimal getMonthlySalary() {
         return monthlySalary;
     }
+
+    @Override
+    public String toString() {
+        return "Cashier { " +
+                "id = '" + id + '\'' +
+                ", name = '" + name + '\'' +
+                ", monthlySalary = " + monthlySalary +
+                " }";
+    }
 }

@@ -40,6 +40,14 @@ public class Store {
         return inventory;
     }
 
+    public int getCountDaysForExpiryDateDiscount() {
+        return countDaysForExpiryDateDiscount;
+    }
+
+    public double getExpiryDateDiscount() {
+        return expiryDateDiscount;
+    }
+
     public EnumMap<GoodsCategory, Double> getMarginPercentByCategory() {
         return marginPercentByCategory;
     }
@@ -68,5 +76,19 @@ public class Store {
     public void addToDeliveredGoods(Goods goods) {
         double currentQuantity = this.deliveredGoods.getOrDefault(goods, 0.0);
         this.deliveredGoods.put(goods, currentQuantity + 1);
+    }
+
+    @Override
+    public String toString() {
+        return "Store{" +
+                "cashiers=" + cashiers +
+                ", deliveredGoods=" + deliveredGoods +
+                ", inventory=" + inventory +
+                ", soldGoods=" + soldGoods +
+                ", issuedReceipts=" + issuedReceipts +
+                ", countDaysForExpiryDateDiscount=" + countDaysForExpiryDateDiscount +
+                ", expiryDateDiscount=" + expiryDateDiscount +
+                ", marginPercentByCategory=" + marginPercentByCategory +
+                '}';
     }
 }

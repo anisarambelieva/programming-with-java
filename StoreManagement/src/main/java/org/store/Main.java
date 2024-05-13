@@ -4,6 +4,7 @@ import org.store.enums.GoodsCategory;
 import org.store.exceptions.NotEnoughGoodsAvailableException;
 import org.store.models.*;
 import org.store.services.CashDeskService;
+import org.store.services.ReceiptService;
 import org.store.services.StoreService;
 
 import java.math.BigDecimal;
@@ -14,7 +15,6 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) {
         Cashier cashier1 = new Cashier("Ben", new BigDecimal(2000));
-        Cashier cashier2 = new Cashier("Tom", new BigDecimal(1000));
 
         EnumMap<GoodsCategory, Double> marginByCategory = new EnumMap<>(GoodsCategory.class);
         marginByCategory.put(GoodsCategory.FOOD, 10.0);
@@ -28,29 +28,28 @@ public class Main {
         StoreService storeService = new StoreService(store);
         storeService.deliverGoods(goods1);
 
-        // TODO: each time goods1 is delivered to the store the price is increased with the margin
-        storeService.deliverGoods(goods1);
-        storeService.deliverGoods(goods1);
         storeService.deliverGoods(goods1);
         storeService.deliverGoods(goods1);
         storeService.deliverGoods(goods2);
         storeService.deliverGoods(goods2);
         storeService.deliverGoods(goods2);
 
-        Customer customer = new Customer(new BigDecimal(100));
+        Customer customer = new Customer(new BigDecimal(1000));
         customer.addToCart(goods1, 1);
-        customer.addToCart(goods1, 3);
         customer.addToCart(goods2, 2);
 
         CashDesk cashDesk = new CashDesk(cashier1, store);
         CashDeskService cashDeskService = new CashDeskService(cashDesk, storeService);
+
         try {
             Receipt receipt = cashDeskService.checkout(customer);
+            ReceiptService receiptService = new ReceiptService(receipt);
+            int count = receiptService.countReceiptsIssued();
+
+            receipt.getGoods();
         }
-        catch (NotEnoughGoodsAvailableException e) {
+        catch (RuntimeException e) {
             System.out.println(e.getMessage());
         }
-
-        Map<Goods, Double> inv = store.getInventory();
     }
 }

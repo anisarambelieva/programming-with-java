@@ -4,10 +4,16 @@ import org.store.exceptions.NotEnoughGoodsAvailableException;
 import org.store.exceptions.NotEnoughMoneyException;
 import org.store.models.*;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.UUID;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class CashDeskService {
     private CashDesk cashDesk;
@@ -49,6 +55,74 @@ public class CashDeskService {
         return true;
     }
 
+    private BigDecimal calculatePriceWithDiscount(BigDecimal price, double discountPercent) {
+        BigDecimal discount = price.multiply(new BigDecimal(discountPercent/100));
+        BigDecimal result = price.subtract(discount);
+
+        return result.setScale(2, BigDecimal.ROUND_UP);
+    }
+
+    private void adjustPricesBasedOnExpiryDate(Map<Goods, Double> cart) {
+        Store store = this.cashDesk.getStore();
+        int countDays = store.getCountDaysForExpiryDateDiscount();
+        double discount = store.getExpiryDateDiscount();
+
+        LocalDate now = LocalDate.now();
+
+        for (Map.Entry<Goods, Double> entry : cart.entrySet()) {
+            Goods goods = entry.getKey();
+            LocalDate expDate =  goods.getExpirationDate();
+            long daysBetween = DAYS.between(expDate, now);
+
+            BigDecimal currentPrice = goods.getPrice();
+
+            if (daysBetween <= countDays) {
+                BigDecimal updatedPrice = calculatePriceWithDiscount(currentPrice, discount);
+                goods.setPrice(updatedPrice);
+            }
+        }
+    }
+
+    private void saveReceiptToFile(Receipt receipt) {
+        String directoryPath = "src/main/resources/receipts";
+        String serialNumber = receipt.getSerialNumber();
+        String fileName = String.format("%s.txt", serialNumber);
+        String content = receipt + "\n";
+
+        try {
+            File directory = new File(directoryPath);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            File file = new File(directory, fileName);
+
+            if (!file.exists()) {
+                file.createNewFile();
+                System.out.println("File created: " + file.getAbsolutePath());
+            }
+
+            // Open the file in append mode using FileWriter
+            FileWriter fileWriter = new FileWriter(file, true);
+
+            // Or use BufferedWriter for efficient writing
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            // Append the content to the file
+            bufferedWriter.write(content);
+
+            // Close the resources
+            bufferedWriter.close();
+            fileWriter.close();
+
+            System.out.println("Content appended to " + file.getAbsolutePath());
+
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
     public Receipt checkout(Customer customer) {
         Map<Goods, Double> customerCart = customer.getCart();
 
@@ -58,8 +132,10 @@ public class CashDeskService {
             throw e;
         }
 
-        this.storeService.addSoldGoods(customerCart);
         this.storeService.removeFromInventory(customerCart);
+
+        adjustPricesBasedOnExpiryDate(customerCart);
+        this.storeService.addSoldGoods(customerCart);
 
         String serialNumber = UUID.randomUUID().toString();
         LocalDate issueDate = LocalDate.now();
@@ -73,6 +149,8 @@ public class CashDeskService {
             throw e;
         }
 
+        System.out.println(receipt);
+        saveReceiptToFile(receipt);
         return receipt;
     }
 }

@@ -2,6 +2,7 @@ package org.store.services;
 
 import org.store.models.*;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.Map;
 
@@ -26,5 +27,25 @@ public class ReceiptService {
         }
 
         return result.setScale(2, BigDecimal.ROUND_UP);
+    }
+
+    public int countReceiptsIssued() {
+        String directoryPath = "src/main/resources/receipts";
+        File folder = new File(directoryPath);
+        int fileCount = 0;
+
+        if (folder.exists()) {
+            File[] files = folder.listFiles();
+
+            if (files.length > 0) {
+                for (File file : files) {
+                    if (file.isFile()) {
+                        fileCount++;
+                    }
+                }
+            }
+        }
+
+        return fileCount;
     }
 }

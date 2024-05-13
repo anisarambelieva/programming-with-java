@@ -16,4 +16,12 @@ public class CashDesk {
     public Store getStore() {
         return store;
     }
+
+    @Override
+    public String toString() {
+        return "CashDesk{" +
+                "cashier=" + cashier +
+                ", store=" + store +
+                '}';
+    }
 }

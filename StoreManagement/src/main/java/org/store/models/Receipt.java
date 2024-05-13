@@ -23,5 +23,19 @@ public class Receipt {
     public Map<Goods, Double> getGoods() {
         return goods;
     }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Receipt {" +
+                "\n  serialNumber = '" + serialNumber + '\'' +
+                "\n  cashier = " + cashier +
+                "\n  issueDate = " + issueDate +
+                "\n  goods = " + goods +
+                "\n}";
+    }
 }
 
